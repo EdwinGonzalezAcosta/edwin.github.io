@@ -4,6 +4,6 @@
 
 [[redirects]]
   from = "/*"
-  to = "/login/"
+  to = "/"
   status = 200
   force = true

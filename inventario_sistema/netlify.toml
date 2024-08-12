@@ -1,8 +1,9 @@
 [build]
-  command = "npm run build"  # Cambia esto si usas otro comando para construir tu proyecto
-  publish = "build"  # Cambia esto al directorio donde se generan los archivos estáticos
+  command = "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+  publish = "templates"  # Ajusta esto al directorio donde se generan los archivos estáticos
 
 [[redirects]]
   from = "/*"
-  to = "/login.html"
+  to = "/index.html"
   status = 200
+  force = true

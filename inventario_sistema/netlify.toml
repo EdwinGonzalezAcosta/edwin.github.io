@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build"  # Cambia esto si usas otro comando para construir tu proyecto
+  publish = "build"  # Cambia esto al directorio donde se generan los archivos estáticos
+
+[[redirects]]
+  from = "/*"
+  to = "/login.html"
+  status = 200

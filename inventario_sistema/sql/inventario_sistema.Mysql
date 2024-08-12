@@ -1,0 +1,53 @@
+CREATE DATABASE IF NOT EXISTS inventario_sistema;
+
+USE inventario_sistema;
+
+-- Tabla TipoUsuario
+CREATE TABLE TipoUsuario (
+    id_tipo_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion_tipo VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- Tabla Usuarios
+CREATE TABLE Usuarios (
+    id_usuarios INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuarios VARCHAR(255) UNIQUE NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
+    tipo_usuario_id INT,
+    FOREIGN KEY (tipo_usuario_id) REFERENCES TipoUsuario(id_tipo_usuario)
+);
+
+-- Tabla EstadoMueble
+CREATE TABLE EstadoMueble (
+    id_estado_mueble INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion_estado VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- Tabla Descripcion
+CREATE TABLE Descripcion (
+    id_descripcion INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion_inventario VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- Tabla Inventario
+CREATE TABLE Inventario (
+    id_inventario INT AUTO_INCREMENT PRIMARY KEY,
+    cod_patrimonial VARCHAR(255) UNIQUE NOT NULL,
+    cod_interno VARCHAR(255) UNIQUE NOT NULL,
+    ano_ingreso YEAR NOT NULL,
+    descripcion_id INT,
+    marca VARCHAR(255),
+    modelo VARCHAR(255),
+    color VARCHAR(255),
+    serie VARCHAR(255),
+    dimensiones VARCHAR(255),
+    estado_mueble_id INT,
+    observaciones VARCHAR(255),
+    estado_logico BOOLEAN NOT NULL DEFAULT TRUE,
+    foto LONGBLOB,            -- Almacena la foto como datos binarios
+    qr_code LONGBLOB,         -- Almacena el código QR como datos binarios
+    usuario_id INT,           -- Relación con la tabla Usuarios
+    FOREIGN KEY (descripcion_id) REFERENCES Descripcion(id_descripcion),
+    FOREIGN KEY (estado_mueble_id) REFERENCES EstadoMueble(id_estado_mueble),
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id_usuarios)   -- Clave foránea que enlaza con Usuarios
+);

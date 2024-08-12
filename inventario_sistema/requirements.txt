@@ -1,0 +1,2 @@
+Django==5.1  # O la versión de Django que estás usando
+mysqlclient==2.2.4  # Asegúrate de usar una versión compatible con tu Django

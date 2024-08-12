@@ -1,0 +1,93 @@
+/* Cambiar la fuente y el tamaño de la letra en toda la tabla */
+#inventoryTable {
+    font-size: 0.65rem; /* Reduce el tamaño de la letra */
+    font-family: 'Arial', sans-serif; /* Cambia la fuente a Arial */
+}
+
+/* Ajustar los encabezados de la tabla */
+#inventoryTable thead th {
+    font-weight: bold;
+    font-family: 'Verdana', sans-serif; /* Cambia la fuente de los encabezados */
+    font-size: 0.6rem; /* Un poco más grande que el cuerpo de la tabla */
+}
+
+
+.home-estado-logico {
+    font-size: 0.5rem; /* Ajusta el tamaño de la fuente en los botones */
+}
+
+
+
+
+
+
+/* Estilo para el modal */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* Estilo para el formulario */
+.form-control,
+.form-select {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+.form-control-file {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+/* Espaciado entre campos del formulario */
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+
+
+/* Estilo para alerta de errores */
+.alert-container .alert {
+    margin-top: 10px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

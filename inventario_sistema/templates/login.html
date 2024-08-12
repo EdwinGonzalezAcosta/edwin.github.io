@@ -1,0 +1,71 @@
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        /* Estilos para la advertencia */
+
+
+    .login-warning {
+    background-color: #ffcccc;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    max-width: 400px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    /* Animación para ocultar la advertencia */
+    .fade-out {
+    animation: fadeOut 2s forwards;
+    opacity: 0;
+}
+
+    @keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+    </style>
+    
+    <script src="{% static 'js/warning.js' %}"></script>
+</head>
+
+
+    <div class="container">
+        
+        <div class="welcome-section">
+            <img src="{% static 'img/inventario.webp' %}" alt="Welcome">
+        </div>
+        <div class="login-section">
+            {% if request.path == '/login/' and not user.is_authenticated %}
+                <div id="login-warning" class="login-warning">
+                   <p>Por favor, inicie sesión para acceder a esta página.</p>
+                </div>
+            {% endif %}
+            <h2 class="title-login">INGRESAR</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form.as_p }}
+                <div class="actions">
+                    <button type="submit">LOGIN</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+{% endblock %}

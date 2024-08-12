@@ -1,0 +1,94 @@
+<!-- templates/edit_product.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Editar Registro del Inventario</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Column 1 -->
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.cod_patrimonial.id_for_label }}" class="form-label">Cod Patrimonial</label>
+                {{ form.cod_patrimonial }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.cod_interno.id_for_label }}" class="form-label">Cod Interno</label>
+                {{ form.cod_interno }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.ano_ingreso.id_for_label }}" class="form-label">Año Ingreso</label>
+                {{ form.ano_ingreso }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.denominacion.id_for_label }}" class="form-label">Descripción</label>
+                {{ form.denominacion }}
+            </div>
+            
+        </div>
+        <div class="row">
+            <!-- Column 2 -->
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.descripcion.id_for_label }}" class="form-label">Denominación</label>
+                {{ form.descripcion }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.marca.id_for_label }}" class="form-label">Marca</label>
+                {{ form.marca }}
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="{{ form.modelo.id_for_label }}" class="form-label">Modelo</label>
+                {{ form.modelo }}
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="{{ form.color.id_for_label }}" class="form-label">Color</label>
+                {{ form.color }}
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="{{ form.serie.id_for_label }}" class="form-label">Serie</label>
+                {{ form.serie }}
+            </div>
+        </div>
+        <div class="row">
+            <!-- Column 3 -->
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.dimensiones.id_for_label }}" class="form-label">Dimensiones</label>
+                {{ form.dimensiones }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.estado_mueble.id_for_label }}" class="form-label">Estado Mueble</label>
+                {{ form.estado_mueble }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.usuario.id_for_label }}" class="form-label">Usuario</label>
+                {{ form.usuario }}
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="{{ form.estado_logico.id_for_label }}" class="form-label">Estado Lógico</label>
+                {{ form.estado_logico }}
+            </div>
+        </div>
+        <div class="row">
+            <!-- Column 4 -->
+            <div class="col-md-12 mb-3">
+                <label for="{{ form.observaciones.id_for_label }}" class="form-label">Observaciones</label>
+                {{ form.observaciones }}
+            </div>
+        </div>
+        <div class="row">
+            <!-- Column 5 -->
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.foto.id_for_label }}" class="form-label">Foto</label>
+                {{ form.foto }}
+            </div>
+            <div class="col-md-5 mb-3">
+                <label for="{{ form.qr_code.id_for_label }}" class="form-label">QR Code</label>
+                {{ form.qr_code }}
+            </div>
+        </div>
+        <div class="text-center"> 
+            <button type="submit" class="btn btn-primary">Actualizar Producto</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

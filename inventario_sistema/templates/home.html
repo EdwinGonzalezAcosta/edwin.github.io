@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Inventario Talleres ------</h1>
+    <!-- Mostrar mensajes de éxito o error -->
+   <!-- Mostrar mensajes de éxito o error -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Button to Open the Modal -->
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <i class="fas fa-plus-circle"></i> Add New Product
+        </button>
+
+        <!-- Botón para exportar a Excel -->
+        <a href="{% url 'export_excel' %}" class="btn btn-info mb-3 ms-2">
+            <i class="fas fa-file-excel"></i> Exportar a Excel
+        </a>
+        <!-- Botón para exportar a Excel sin imágenes -->
+        <a href="{% url 'export_excel_without_images' %}" class="btn btn-secondary mb-3 ms-2">
+           <i class="fas fa-file-excel"></i> Exportar a Excel (Sin Imágenes)
+        </a>
+    </div>
+    <!-- Search Bar -->
+    <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control " placeholder="Search for products...">
+        <span class="input-group-text "><i class="fas fa-search"></i></span>
+    </div>
+
+    <!-- Table to List Inventory -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="inventoryTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Cod. Patrim.</th>
+                    <th>Cod. Interno</th>
+                    <th>Año Ingreso</th>
+                    <th>Descripción</th>
+                    <th>Denominación</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                    <th>Serie</th>
+                    <th>Dimensiones</th>
+                    <th>Obser.</th>
+                    <th>Estado</th>
+                    <th>Imagen</th>
+                    <!--<th>QR</th>-->
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in inventory %}
+                    <tr class="{% if not item.estado_logico %}d-none{% endif %}">
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.cod_patrimonial }}</td>
+                        <td>{{ item.cod_interno }}</td>
+                        <td>{{ item.ano_ingreso }}</td>
+                        <th>{{ item.denominacion }}</th>
+                        <td>{{ item.descripcion.descripcion_inventario }}</td>
+                        <td>{{ item.marca }}</td>
+                        <td>{{ item.modelo }}</td>
+                        <td>{{ item.color }}</td>
+                        <td>{{ item.serie }}</td>
+                        <td>{{ item.dimensiones }}</td>
+                        <td>{{ item.observaciones }}</td>
+                        <td>{{ item.estado_mueble.descripcion_estado }}</td>
+                        <td>
+                            {% if item.foto %}
+                                <img src="{{ item.foto.url }}" alt="Image" width="50">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <!-- Botón para mostrar los botones de acción -->
+                            <button type="button" class="btn btn-info btn-sm mb-2" onclick="toggleButtons({{ item.id }})">
+                                <i class="fas fa-eye"></i> Mostrar Botones
+                            </button>
+    
+                            <div id="buttons-container-{{ item.id }}" class="d-none">
+                                <div class="d-flex justify-content-center">
+                                    <button type="button" class="home-estado-logico btn btn-danger btn-sm me-2" onclick="deactivateProduct({{ item.id }})">
+                                        <i class="fas fa-ban"></i> Dar Baja
+                                    </button>
+
+                            <a href="{% url 'edit_product' item.id %}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                             </div>
+                          </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal for Adding New Product -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">AGREGAR NUEVO REGISTRO AL INVENTARIO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- Column 1 -->
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.cod_patrimonial.id_for_label }}" class="form-label">Cod Patrimonial</label>
+                            {{ form.cod_patrimonial }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.cod_interno.id_for_label }}" class="form-label">Cod Interno</label>
+                            {{ form.cod_interno }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.ano_ingreso.id_for_label }}" class="form-label">Año Ingreso</label>
+                            {{ form.ano_ingreso }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.descripcion.id_for_label }}" class="form-label">Denominacion</label>
+                            {{ form.descripcion }}
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <!-- Column 2 -->
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.denominacion.id_for_label }}" class="form-label">Descripción</label>
+                            {{ form.denominacion }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.marca.id_for_label }}" class="form-label">Marca</label>
+                            {{ form.marca }}
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="{{ form.modelo.id_for_label }}" class="form-label">Modelo</label>
+                            {{ form.modelo }}
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="{{ form.color.id_for_label }}" class="form-label">Color</label>
+                            {{ form.color }}
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="{{ form.serie.id_for_label }}" class="form-label">Serie</label>
+                            {{ form.serie }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Column 3 -->
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.dimensiones.id_for_label }}" class="form-label">Dimensiones</label>
+                            {{ form.dimensiones }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.estado_mueble.id_for_label }}" class="form-label">Estado Mueble</label>
+                            {{ form.estado_mueble }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.usuario.id_for_label }}" class="form-label">Usuario</label>
+                            {{ form.usuario }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.estado_logico.id_for_label }}" class="form-label" >Estado Lógico</label>
+                            {{ form.estado_logico }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Column 4 -->
+                        
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.observaciones.id_for_label }}" class="form-label">Observaciones</label>
+                            {{ form.observaciones }}
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <!-- Column 5 -->
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.foto.id_for_label }}" class="form-label">Foto</label>
+                            {{ form.foto }}
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <label for="{{ form.qr_code.id_for_label }}" class="form-label">QR Code</label>
+                            {{ form.qr_code }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    // Función para mostrar/ocultar los botones
+    function toggleButtons(productId) {
+        const buttonsContainer = document.getElementById(`buttons-container-${productId}`);
+        if (buttonsContainer.classList.contains('d-none')) {
+            buttonsContainer.classList.remove('d-none');
+        } else {
+            buttonsContainer.classList.add('d-none');
+        }
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#inventoryTable tbody tr');
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        });
+    });
+
+    // Deactivate product functionality
+    function deactivateProduct(productId) {
+        if (confirm('Are you sure you want to deactivate this product?')) {
+            fetch(`/deactivate_product/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'estado_logico': false })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const row = document.querySelector(`#inventoryTable tbody tr:nth-child(${productId})`);
+                    row.classList.add('d-none');
+                } else {
+                    alert('Failed to deactivate the product.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+
+    //ALERTA DESAPARECE DESPUES DE 8 SEGUNDOS
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function (alert) {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(function () {
+                    alert.remove();
+                }, 500);  // Tiempo adicional para la transición de desvanecimiento
+            });
+        }, 8000);  // Tiempo antes de empezar a ocultar
+    });
+</script>
+{% endblock %}

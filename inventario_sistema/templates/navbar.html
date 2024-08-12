@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'home' %}">Registro de Inventario</a>
+        </div>
+        <ul class="navbar-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'register' %}">Registrar</a></li>
+            <!-- Añadir el botón de cerrar sesión -->
+            <li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-logout">
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </li>
+        </ul>
+        <button class="navbar-toggler">
+            &#9776;
+        </button>
+    </nav>
+</body>
+</html>

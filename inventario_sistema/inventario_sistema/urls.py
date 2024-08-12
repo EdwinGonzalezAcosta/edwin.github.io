@@ -27,6 +27,5 @@ urlpatterns = [
     path('register/', include('app.urls')),  # Verifica si necesitas esto aquí
     path('login/', include('app.urls')),     # Verifica si necesitas esto aquí
     path('home/', include('app.urls')),      # Verifica si necesitas esto aquí
-    path('', include('app.urls')),           # Verifica si necesitas esto aquí
-     path('', login_view, name='login'),  # Redirige la raíz a la vista home
+    path('', login_view, name='login'),  # Redirige la raíz a la vista home
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
